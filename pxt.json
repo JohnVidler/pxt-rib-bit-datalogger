@@ -1,5 +1,5 @@
 {
-    "name": "pxt-rib-bit-storage",
+    "name": "pxt-rib-bit-datalogger",
     "version": "0.0.1",
     "description": "",
     "dependencies": {
