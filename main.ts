@@ -311,7 +311,11 @@ namespace SDCard {
     // ========== INITIALIZATION ==========
 
     export function initializeCard(): boolean {
-        for( let i=0; i<3; i++ ) {
+        if( _initializeCard(true) ) // Attempt high-speed mode first (1Mhz)
+            return true;
+
+        // ... otherwise fall back to low speed mode
+        for( let i=0; i<2; i++ ) {
             if( _initializeCard() )
                 return true;
             basic.pause(200);
@@ -319,7 +323,7 @@ namespace SDCard {
         return false;
     }
 
-    export function _initializeCard(): boolean {
+    export function _initializeCard(fastMode: boolean = false): boolean {
         _initialized = false
         _cardType = CardType.UNKNOWN
         _fsType = FSType.UNKNOWN
@@ -381,7 +385,11 @@ namespace SDCard {
             deselect()
             return false
         }
-        pins.spiFrequency(4000000)
+        if (fastMode)
+            pins.spiFrequency(20000000);
+        else
+            pins.spiFrequency(4000000)
+        
         deselect()
         _initialized = true
         _sectorBuffer = pins.createBuffer(512)
