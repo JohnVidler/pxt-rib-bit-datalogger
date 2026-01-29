@@ -311,6 +311,15 @@ namespace SDCard {
     // ========== INITIALIZATION ==========
 
     export function initializeCard(): boolean {
+        for( let i=0; i<3; i++ ) {
+            if( _initializeCard() )
+                return true;
+            basic.pause(200);
+        }
+        return false;
+    }
+
+    export function _initializeCard(): boolean {
         _initialized = false
         _cardType = CardType.UNKNOWN
         _fsType = FSType.UNKNOWN
